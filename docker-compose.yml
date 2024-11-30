@@ -28,6 +28,7 @@ services:
             - mailpit
             - selenium
     mysql:
+        platform: linux/x86_64
         image: 'mysql/mysql-server:8.0'
         ports:
             - '${FORWARD_DB_PORT:-3306}:3306'
@@ -67,17 +68,6 @@ services:
             test: ["CMD", "mysqladmin", "ping", "-p${DB_PASSWORD}"]
             retries: 3
             timeout: 5s
-    phpmyadmin:
-        depends_on:
-            - mysql
-        image: phpmyadmin/phpmyadmin
-        environment:
-            - PMA_HOST=mysql
-            - PMA_PORT=3306
-        networks:
-            - sail
-        ports:
-            - 8001:80
 
     redis:
         image: 'redis:alpine'
@@ -121,6 +111,7 @@ services:
         networks:
             - sail
     selenium:
+        platform: linux/x86_64
         image: selenium/standalone-chrome
         extra_hosts:
             - 'host.docker.internal:host-gateway'
